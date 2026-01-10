@@ -115,11 +115,6 @@ export default function AuthPage() {
                 {isLogin ? 'Regístrate' : 'Inicia Sesión'}
               </button>
             </p>
-            {isLogin && (
-              <p className="text-center text-xs text-muted-foreground mt-2">
-                Prueba: admin@sportcenter.com / 123456
-              </p>
-            )}
           </CardContent>
         </Card>
       </div>
