@@ -119,7 +119,7 @@ Reservas Canchas/
 - **Servicios**: `RegistroService`, `CanchasService`, `ReservacionService`, `PagoService`, `CorreoService`
 
 ### Frontend
-- **Rutas**: React Router con rutas en español
+- **Rutas**: React Router 
 - **Estado**: Context API para autenticación
 - **UI**: Componentes reutilizables con Shadcn UI
 
