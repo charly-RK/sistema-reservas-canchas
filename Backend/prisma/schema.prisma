@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id              Int           @id @default(autoincrement())
+  nombre          String
+  email           String        @unique
+  password        String
+  rol             String        @default("CLIENTE") // 'CLIENTE', 'ADMIN'
+  fecha_registro  DateTime      @default(now())
+  reservas        Reserva[]
+
+  @@map("usuarios")
+}
+
+model Cancha {
+  id          Int           @id @default(autoincrement())
+  nombre      String
+  tipo        String        // 'FUTBOL', 'TENIS', 'BASQUET'
+  precio_hora Float
+  estado      String        @default("DISPONIBLE") // 'DISPONIBLE', 'MANTENIMIENTO'
+  reservas    Reserva[]
+
+  @@map("canchas")
+}
+
+model Reserva {
+  id           Int       @id @default(autoincrement())
+  usuario_id   Int
+  cancha_id    Int
+  fecha_inicio DateTime
+  fecha_fin    DateTime
+  estado       String    @default("PENDIENTE") // 'PENDIENTE', 'CONFIRMADA', 'CANCELADA'
+  creado_en    DateTime  @default(now())
+  usuario      Usuario   @relation(fields: [usuario_id], references: [id])
+  cancha       Cancha    @relation(fields: [cancha_id], references: [id])
+  pago         Pago?
+
+  @@map("reservas")
+}
+
+model Pago {
+  id          Int      @id @default(autoincrement())
+  reserva_id  Int      @unique
+  monto       Float
+  metodo      String   // 'TARJETA', 'EFECTIVO'
+  estado      String   @default("COMPLETADO") // 'COMPLETADO', 'FALLIDO'
+  fecha_pago  DateTime @default(now())
+  reserva     Reserva  @relation(fields: [reserva_id], references: [id])
+
+  @@map("pagos")
+}

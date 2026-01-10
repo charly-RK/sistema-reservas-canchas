@@ -1,0 +1,40 @@
+# Base de Datos: Sistema de Gestión de Reservas CD
+
+## Tablas
+
+### 1. Usuarios (User)
+- **id**: Integer (PK, Auto-increment)
+- **nombre**: String
+- **email**: String (Unique)
+- **password**: String (Hashed)
+- **rol**: String (ENUM: 'CLIENTE', 'ADMIN')
+- **fecha_registro**: DateTime (Default: Now)
+
+### 2. Canchas (Court)
+- **id**: Integer (PK, Auto-increment)
+- **nombre**: String (ej: "Cancha Fútbol 1")
+- **tipo**: String (ENUM: 'FUTBOL', 'TENIS', 'BASQUET')
+- **precio_hora**: Float
+- **estado**: String (ENUM: 'DISPONIBLE', 'MANTENIMIENTO')
+
+### 3. Reservas (Reservation)
+- **id**: Integer (PK, Auto-increment)
+- **usuario_id**: Integer (FK -> User.id)
+- **cancha_id**: Integer (FK -> Court.id)
+- **fecha_inicio**: DateTime
+- **fecha_fin**: DateTime
+- **estado**: String (ENUM: 'PENDIENTE', 'CONFIRMADA', 'CANCELADA')
+- **creado_en**: DateTime (Default: Now)
+
+### 4. Pagos (Payment)
+- **id**: Integer (PK, Auto-increment)
+- **reserva_id**: Integer (FK -> Reservation.id)
+- **monto**: Float
+- **metodo**: String (ENUM: 'TARJETA', 'EFECTIVO')
+- **estado**: String (ENUM: 'COMPLETADO', 'FALLIDO')
+- **fecha_pago**: DateTime (Default: Now)
+
+## Relaciones
+- Un **Usuario** puede tener muchas **Reservas**.
+- Una **Cancha** puede tener muchas **Reservas**.
+- Una **Reserva** tiene un **Pago**.
