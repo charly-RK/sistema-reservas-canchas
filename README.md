@@ -18,7 +18,7 @@ Aplicación web que permite a usuarios registrarse, reservar canchas deportivas 
 
 ## 🛠️ Tecnologías
 
-### Backend
+### Backenda
 - Node.js + TypeScript
 - Express.js
 - Prisma ORM

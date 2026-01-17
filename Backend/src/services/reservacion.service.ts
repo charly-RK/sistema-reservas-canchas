@@ -1,4 +1,4 @@
-import { prisma } from '../index';
+import { prisma } from '../prisma';
 import { CorreoService } from './correo.service';
 
 const emailService = new CorreoService();
