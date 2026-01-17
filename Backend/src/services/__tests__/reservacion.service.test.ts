@@ -10,7 +10,7 @@ jest.mock('../correo.service', () => ({
 }));
 
 import { ReservacionService } from '../reservacion.service';
-import { prisma } from '../../index';
+import { prisma } from '../../prisma';
 
 describe('ReservacionService', () => {
   const service = new ReservacionService();

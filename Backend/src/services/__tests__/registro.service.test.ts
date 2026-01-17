@@ -13,7 +13,7 @@ jest.mock('jsonwebtoken', () => ({
 }));
 
 import { RegistroService } from '../registro.service';
-import { prisma } from '../../index';
+import { prisma } from '../../prisma';
 import bcrypt from 'bcryptjs';
 
 describe('RegistroService', () => {
@@ -26,7 +26,9 @@ describe('RegistroService', () => {
   it('registra un usuario nuevo', async () => {
     (prisma.usuario.findUnique as jest.Mock).mockResolvedValue(null);
     (bcrypt.hash as jest.Mock).mockResolvedValue('hashed_pass');
+
     (prisma.usuario.create as jest.Mock).mockResolvedValue({
+      id: 1,
       email: 'test@test.com',
       rol: 'CLIENTE',
     });
@@ -44,7 +46,11 @@ describe('RegistroService', () => {
     (prisma.usuario.findUnique as jest.Mock).mockResolvedValue({ id: 1 });
 
     await expect(
-      service.register({ email: 'test@test.com' })
+      service.register({
+        nombre: 'Test',
+        email: 'test@test.com',
+        password: '1234',
+      })
     ).rejects.toThrow('Email ya en uso');
   });
 });
