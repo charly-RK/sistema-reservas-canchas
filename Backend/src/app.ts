@@ -5,16 +5,20 @@ import registroRoutes from './rutas/registro.routes';
 import canchasRoutes from './rutas/canchas.routes';
 import reservacionRoutes from './rutas/reservacion.routes';
 import pagoRoutes from './rutas/pago.routes';
+import { authMiddleware } from './middleware/auth.middleware';
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/registro', registroRoutes);
-app.use('/api/canchas', canchasRoutes);
-app.use('/api/reservaciones', reservacionRoutes);
-app.use('/api/pagos', pagoRoutes);
+// Public routes
+app.use('/auth', registroRoutes);
+app.use('/canchas', canchasRoutes);
+app.use('/reservas', reservacionRoutes);
+
+// Protected routes
+app.use('/pagos', authMiddleware, pagoRoutes);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });

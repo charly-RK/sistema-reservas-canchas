@@ -7,6 +7,7 @@
     "test": "jest",
     "test:integration": "jest src/integration",
     "test:security": "jest src/security",
+    "test:performance": "ts-node src/performance/load-simulation.ts",
     "dev": "ts-node src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js"
@@ -23,6 +24,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.0.3",
     "@types/nodemailer": "^7.0.4",
+    "axios": "^1.13.2",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",

@@ -33,26 +33,26 @@ export function BookingSummary({ court, date, time }: BookingSummaryProps) {
       </CardHeader>
 
       <CardContent className="space-y-4">
-        {/* Court Info */}
+        {/* Información de la cancha */}
         <div className="flex gap-4">
           <img
-            src={court.imageUrl}
-            alt={court.name}
+            src={court.imageUrl || '/placeholder-court.jpg'}
+            alt={court.nombre}
             className="w-24 h-24 object-cover rounded-lg"
           />
           <div>
-            <h3 className="font-semibold">{court.name}</h3>
-            <p className="text-sm text-muted-foreground">{getSportDisplayName(court.sportType)}</p>
+            <h3 className="font-semibold">{court.nombre}</h3>
+            <p className="text-sm text-muted-foreground">{getSportDisplayName(court.tipo)}</p>
             <div className="flex items-center text-sm text-muted-foreground mt-1">
               <MapPin className="h-3 w-3 mr-1" />
-              {court.location}
+              {court.description || 'Sede Principal'}
             </div>
           </div>
         </div>
 
         <Separator />
 
-        {/* Date & Time */}
+        {/* fecha y hora */}
         {date && time ? (
           <div className="space-y-3">
             <div className="flex items-center gap-3">
@@ -79,10 +79,10 @@ export function BookingSummary({ court, date, time }: BookingSummaryProps) {
 
         <Separator />
 
-        {/* Price */}
+        {/* Precio */}
         <div className="flex justify-between items-center">
           <span className="text-muted-foreground">Precio por hora</span>
-          <span className="font-semibold">${court.pricePerHour}</span>
+          <span className="font-semibold">${court.precio_hora}</span>
         </div>
 
         {date && time && (
@@ -90,7 +90,7 @@ export function BookingSummary({ court, date, time }: BookingSummaryProps) {
             <Separator />
             <div className="flex justify-between items-center">
               <span className="font-semibold">Total a pagar</span>
-              <span className="text-xl font-bold text-primary">${court.pricePerHour}</span>
+              <span className="text-xl font-bold text-primary">${court.precio_hora}</span>
             </div>
           </>
         )}

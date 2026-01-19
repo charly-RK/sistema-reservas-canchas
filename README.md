@@ -15,16 +15,22 @@ Aplicación web que permite a usuarios registrarse, reservar canchas deportivas 
 - ✅ Notificaciones automáticas por email
 - ✅ Panel de administración
 - ✅ Historial de reservas
+- ✅ **Seguridad Mejorada:**
+    - Autenticación JWT robusta
+    - Protección contra inyecciones SQL (Prisma)
+    - Validación estricta de datos
+    - Protección de datos sensibles
 
 ## 🛠️ Tecnologías
 
-### Backenda
+### Backend
 - Node.js + TypeScript
 - Express.js
 - Prisma ORM
 - SQLite
 - JWT + bcrypt
 - Nodemailer
+- **Jest + Supertest (Testing)**
 
 ### Frontend
 - React + Vite
@@ -70,13 +76,56 @@ DATABASE_URL="file:./dev.db"
 JWT_SECRET="tu_secreto_jwt"
 EMAIL_USER="tu_email@gmail.com"
 EMAIL_PASS="tu_app_password"
+NODE_ENV="development"
 ```
 
-## 🎯 Uso
+## 🧪 Testing
 
-1. **Iniciar Backend**: `cd Backend && npm run dev` (Puerto 3000)
-2. **Iniciar Frontend**: `cd Frontend && npm run dev` (Puerto 5173)
-3. **Abrir navegador**: `http://localhost:5173`
+El proyecto incluye una suite completa de pruebas: unitarias, seguridad, integración, rendimiento y E2E.
+
+### Backend (Unitarias, Seguridad, Integración, Rendimiento)
+
+Ejecutar en la carpeta `Backend`:
+
+```bash
+# Pruebas Unitarias
+npm test
+
+# Pruebas de Seguridad
+npm run test:security
+
+# Pruebas de Integración
+npm run test:integration
+
+# Pruebas de Rendimiento
+npm run test:performance
+```
+
+### E2E (End-to-End) con Playwright
+
+Las pruebas E2E verifican el flujo completo del usuario en la aplicación real.
+
+**Requisitos:**
+1. Backend corriendo (`npm run dev` en carpeta `Backend`)
+2. Frontend corriendo (`npm run dev` en carpeta `Frontend`)
+
+**Ejecutar pruebas:**
+
+```bash
+cd e2e
+npx playwright test
+```
+
+Ver reporte detallado:
+```bash
+npx playwright show-report
+```
+
+## 🖥️ Uso
+
+1. **Backend**: Asegúrate de que el servidor esté corriendo en puerto 3000.
+2. **Frontend**: Asegúrate de que el cliente esté corriendo en puerto 8080.
+3. **Abrir navegador**: Ve a `http://localhost:8080` (o el puerto que indique Vite).
 
 ### Crear Usuario Admin
 
@@ -96,6 +145,8 @@ Reservas Canchas/
 │   │   ├── controllador/     # Controladores
 │   │   ├── services/          # Lógica de negocio
 │   │   ├── rutas/             # Rutas de API
+│   │   ├── middleware/        # Middleware (Auth, etc)
+│   │   ├── security/          # Tests de seguridad
 │   │   └── index.ts           # Punto de entrada
 │   ├── prisma/
 │   │   ├── schema.prisma      # Esquema de BD
@@ -117,6 +168,7 @@ Reservas Canchas/
 - **Modelos**: Prisma Schema (Usuario, Cancha, Reserva, Pago)
 - **Controladores**: `RegistroController`, `CanchasController`, `ReservacionController`, `PagoController`
 - **Servicios**: `RegistroService`, `CanchasService`, `ReservacionService`, `PagoService`, `CorreoService`
+- **Middleware**: `authMiddleware` (Protección de rutas)
 
 ### Frontend
 - **Rutas**: React Router 
@@ -126,27 +178,27 @@ Reservas Canchas/
 ## 📡 API Endpoints
 
 ### Autenticación
-- `POST /api/registro/register` - Registrar usuario
-- `POST /api/registro/login` - Iniciar sesión
+- `POST /auth/register` - Registrar usuario
+- `POST /auth/login` - Iniciar sesión
 
 ### Canchas
-- `GET /api/canchas` - Listar canchas
-- `POST /api/canchas` - Crear cancha (admin)
-- `PUT /api/canchas/:id` - Actualizar cancha
-- `DELETE /api/canchas/:id` - Eliminar cancha
+- `GET /canchas` - Listar canchas (Público)
+- `POST /canchas` - Crear cancha (Admin)
+- `PUT /canchas/:id` - Actualizar cancha (Admin)
+- `DELETE /canchas/:id` - Eliminar cancha (Admin)
 
 ### Reservas
-- `GET /api/reservaciones` - Listar todas
-- `GET /api/reservaciones/user/:userId` - Por usuario
-- `POST /api/reservaciones` - Crear reserva
-- `DELETE /api/reservaciones/:id` - Cancelar
+- `GET /reservas` - Listar todas (Público - Disponibilidad)
+- `GET /reservas/user/:userId` - Mis reservas
+- `POST /reservas` - Crear reserva (Autenticado)
+- `DELETE /reservas/:id` - Cancelar (Autenticado)
 
 ### Pagos
-- `POST /api/pagos` - Procesar pago
+- `POST /pagos` - Procesar pago (Autenticado)
 
 ## 👥 Autores
 
-- **Desarrollador**: Risk Keep
+- **Desarrollador**: GRUPO 5
 - **Proyecto**: Sistema de Gestión de Reservas
 
 

@@ -41,6 +41,7 @@ export interface Reservation {
   estado: BookingStatus;
   creado_en?: string;
   court?: Court;
+  cancha?: Court;
   user?: User;
 }
 
@@ -56,7 +57,7 @@ export interface Payment {
 
 export interface PaymentInfo {
   cardNumber: string;
-  cardName: string;
+  cardHolder: string;
   expiryDate: string;
   cvv: string;
 }

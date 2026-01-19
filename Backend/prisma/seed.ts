@@ -1,4 +1,6 @@
+/// <reference types="node" />
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
@@ -67,6 +69,23 @@ async function main() {
     console.log(`   - ${tenis1.nombre} ($${tenis1.precio_hora}/hora)`);
     console.log(`   - ${basquet1.nombre} ($${basquet1.precio_hora}/hora)`);
     console.log(`   - ${futbol3.nombre} ($${futbol3.precio_hora}/hora) - EN MANTENIMIENTO`);
+
+    console.log(`   - ${futbol3.nombre} ($${futbol3.precio_hora}/hora) - EN MANTENIMIENTO`);
+
+    // Crear usuario de prueba
+    const hashedPassword = await bcrypt.hash('123456', 10);
+
+    await prisma.usuario.upsert({
+        where: { email: 'user@test.com' },
+        update: {},
+        create: {
+            nombre: 'Test User',
+            email: 'user@test.com',
+            password: hashedPassword,
+            rol: 'CLIENTE'
+        }
+    });
+    console.log('Usuario de prueba creado: user@test.com / 123456');
 
     console.log('\nSeed completado exitosamente!');
 }

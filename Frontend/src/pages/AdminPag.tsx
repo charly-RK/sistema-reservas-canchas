@@ -13,7 +13,7 @@ import api from '@/services/api';
 import type { Court } from '@/types';
 
 export default function AdminPage() {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [courts, setCourts] = useState<Court[]>([]);
   const [loading, setLoading] = useState(true);
@@ -27,12 +27,13 @@ export default function AdminPage() {
   });
 
   useEffect(() => {
+    if (authLoading) return;
     if (!isAuthenticated || user?.rol !== 'ADMIN') {
       navigate('/');
       return;
     }
     fetchCourts();
-  }, [isAuthenticated, user, navigate]);
+  }, [isAuthenticated, user, navigate, authLoading]);
 
   const fetchCourts = async () => {
     try {

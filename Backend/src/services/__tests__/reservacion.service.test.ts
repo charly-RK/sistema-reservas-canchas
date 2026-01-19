@@ -1,7 +1,8 @@
-jest.mock('../../index', () => {
-  const { prisma } = require('../../__mocks__/prisma');
-  return { prisma };
+jest.mock('../../prisma', () => {
+  const prismaMock = require('../../__mocks__/prisma').prisma;
+  return { prisma: prismaMock };
 });
+
 
 jest.mock('../correo.service', () => ({
   CorreoService: jest.fn().mockImplementation(() => ({

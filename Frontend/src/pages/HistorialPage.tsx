@@ -11,23 +11,24 @@ import api from '@/services/api';
 import type { Reservation } from '@/types';
 
 export default function HistoryPage() {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (authLoading) return;
     if (!isAuthenticated || !user) {
       navigate('/registro');
       return;
     }
     fetchReservations();
-  }, [isAuthenticated, user, navigate]);
+  }, [isAuthenticated, user, navigate, authLoading]);
 
   const fetchReservations = async () => {
     if (!user) return;
     try {
-      const response = await api.get(`/reservaciones/user/${user.id}`);
+      const response = await api.get(`/reservas/user/${user.id}`);
       setReservations(response.data);
     } catch (error) {
       toast.error('Error al cargar reservas');
@@ -39,7 +40,7 @@ export default function HistoryPage() {
   const handleCancel = async (id: number) => {
     if (!confirm('¿Estás seguro de cancelar esta reserva?')) return;
     try {
-      await api.delete(`/reservaciones/${id}`);
+      await api.delete(`/reservas/${id}`);
       toast.success('Reserva cancelada');
       fetchReservations();
     } catch (error) {

@@ -6,6 +6,17 @@ const reservacionService = new ReservacionService();
 export class ReservacionController {
     async create(req: Request, res: Response) {
         try {
+            const { fecha_inicio, cancha_id } = req.body;
+
+            if (isNaN(Date.parse(fecha_inicio))) {
+                res.status(400).json({ error: 'Fecha inválida' });
+                return;
+            }
+            if (!cancha_id || typeof cancha_id !== 'number' || cancha_id <= 0) {
+                res.status(400).json({ error: 'ID de cancha inválido' });
+                return;
+            }
+
             const reservation = await reservacionService.create(req.body);
             res.status(201).json(reservation);
         } catch (error: any) {

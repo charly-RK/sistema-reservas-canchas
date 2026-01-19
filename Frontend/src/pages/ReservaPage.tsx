@@ -32,7 +32,7 @@ export default function BookingPage() {
       try {
         const [courtsRes, reservationsRes] = await Promise.all([
           api.get('/canchas'),
-          api.get('/reservaciones')
+          api.get('/reservas')
         ]);
         setCourts(courtsRes.data);
         setReservations(reservationsRes.data);
@@ -60,12 +60,19 @@ export default function BookingPage() {
     const slots = [];
     for (let i = 8; i < 22; i++) {
       const time = `${i.toString().padStart(2, '0')}:00`;
+
       // Verificar si está reservado
-      const isReserved = reservations.some(r =>
-        r.cancha_id.toString() === courtId &&
-        r.fecha_inicio.startsWith(`${date}T${time}`) &&
-        r.estado !== 'CANCELADA'
-      );
+      const isReserved = reservations.some(r => {
+        if (r.cancha_id.toString() !== courtId || r.estado === 'CANCELADA') return false;
+
+        // Convertir la fecha UTC de la reserva a hora local
+        const reservationDate = new Date(r.fecha_inicio);
+        const localDate = reservationDate.toLocaleDateString('en-CA'); // YYYY-MM-DD
+        const localTime = reservationDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+
+        return localDate === date && localTime === time;
+      });
+
       slots.push({ time, available: !isReserved });
     }
     return slots;
@@ -88,10 +95,14 @@ export default function BookingPage() {
 
     try {
       // 1. Crear Reserva
-      const startTime = `${selectedDate}T${selectedTime}:00Z`;
-      const endTime = `${selectedDate}T${(parseInt(selectedTime) + 1).toString().padStart(2, '0')}:00:00Z`;
+      // Crear fechas usando la zona horaria local del navegador
+      const startDateTime = new Date(`${selectedDate}T${selectedTime}:00`);
+      const endDateTime = new Date(`${selectedDate}T${(parseInt(selectedTime) + 1).toString().padStart(2, '0')}:00:00`);
 
-      const reservationRes = await api.post('/reservaciones', {
+      const startTime = startDateTime.toISOString();
+      const endTime = endDateTime.toISOString();
+
+      const reservationRes = await api.post('/reservas', {
         usuario_id: user.id,
         cancha_id: selectedCourt.id,
         fecha_inicio: startTime,
@@ -121,7 +132,7 @@ export default function BookingPage() {
       toast.success('¡Reserva confirmada!');
 
       // Refrescar reservas
-      const res = await api.get('/reservaciones');
+      const res = await api.get('/reservas');
       setReservations(res.data);
 
     } catch (error: any) {
@@ -166,7 +177,7 @@ export default function BookingPage() {
             </div>
             <div>
               <BookingSummary
-                court={{ ...selectedCourt, name: selectedCourt.nombre, sportType: selectedCourt.tipo, pricePerHour: selectedCourt.precio_hora } as any} // Quick cast to adapt to component props if needed
+                court={selectedCourt}
                 date={selectedDate}
                 time={selectedTime}
               />

@@ -4,7 +4,7 @@ import app from '../app';
 describe('Pruebas de seguridad - Control de acceso', () => {
 
   it('Debe bloquear acceso a reservas sin autenticación', async () => {
-    const res = await request(app).get('/reservas');
+    const res = await request(app).post('/reservas');
     expect(res.status).toBe(401);
   });
 

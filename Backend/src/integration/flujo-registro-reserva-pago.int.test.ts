@@ -1,4 +1,4 @@
-import { prisma } from '../index';
+import { prisma } from '../prisma';
 import { RegistroService } from '../services/registro.service';
 import { ReservacionService } from '../services/reservacion.service';
 import { PagoService } from '../services/pago.service';

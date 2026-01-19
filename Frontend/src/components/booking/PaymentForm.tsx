@@ -44,11 +44,11 @@ export function PaymentForm({ amount, onSubmit, isLoading }: PaymentFormProps) {
     } else if (field === 'expiryDate') {
       formattedValue = formatExpiryDate(value);
     } else if (field === 'cvv') {
-      formattedValue = value.replace(/\D/g, '').slice(0, 4);
+      formattedValue = value.replace(/\D/g, '').slice(0, 3);
     }
 
     setFormData(prev => ({ ...prev, [field]: formattedValue }));
-    
+
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: undefined }));
     }
@@ -67,6 +67,12 @@ export function PaymentForm({ amount, onSubmit, isLoading }: PaymentFormProps) {
 
     if (!formData.expiryDate || formData.expiryDate.length < 5) {
       newErrors.expiryDate = 'Ingresa una fecha válida';
+    } else {
+      const [month, year] = formData.expiryDate.split('/');
+      const monthNum = parseInt(month, 10);
+      if (monthNum < 1 || monthNum > 12) {
+        newErrors.expiryDate = 'Mes inválido (01-12)';
+      }
     }
 
     if (!formData.cvv || formData.cvv.length < 3) {

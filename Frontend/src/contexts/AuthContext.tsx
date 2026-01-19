@@ -3,6 +3,7 @@ import { User, AuthState } from '@/types';
 import api from '@/services/api';
 
 interface AuthContextType extends AuthState {
+  isLoading: boolean;
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   register: (userData: { nombre: string; email: string; password: string }) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
@@ -14,10 +15,11 @@ const STORAGE_KEY = 'sportcenter_auth_token';
 const USER_KEY = 'sportcenter_user';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [authState, setAuthState] = useState<AuthState>({
+  const [authState, setAuthState] = useState<AuthState & { isLoading: boolean }>({
     user: null,
     isAuthenticated: false,
     token: null,
+    isLoading: true,
   });
 
   useEffect(() => {
@@ -31,17 +33,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           user,
           isAuthenticated: true,
           token,
+          isLoading: false,
         });
       } catch (e) {
         localStorage.removeItem(STORAGE_KEY);
         localStorage.removeItem(USER_KEY);
+        setAuthState(prev => ({ ...prev, isLoading: false }));
       }
+    } else {
+      setAuthState(prev => ({ ...prev, isLoading: false }));
     }
   }, []);
 
   const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     try {
-      const response = await api.post('/registro/login', { email, password });
+      const response = await api.post('/auth/login', { email, password });
       const { user, token } = response.data;
 
       localStorage.setItem(STORAGE_KEY, token);
@@ -51,6 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         user,
         isAuthenticated: true,
         token,
+        isLoading: false,
       });
 
       return { success: true };
@@ -66,7 +73,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     userData: { nombre: string; email: string; password: string }
   ): Promise<{ success: boolean; error?: string }> => {
     try {
-      await api.post('/registro/register', userData);
+      await api.post('/auth/register', userData);
       // Optional: Auto login after register or just return success
       return { success: true };
     } catch (error: any) {
@@ -84,6 +91,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user: null,
       isAuthenticated: false,
       token: null,
+      isLoading: false,
     });
   };
 

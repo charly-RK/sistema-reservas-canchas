@@ -1,0 +1,94 @@
+--------------------------------------------------------------------------------
+Casos de USO (Basados en E2E Tests)
+--------------------------------------------------------------------------------
+CU001: Usuario registra cuenta nueva
+CU002: Usuario inicia sesión
+CU003: Usuario visualiza canchas disponibles
+CU004: Usuario reserva una cancha y recibe confirmación
+CU005: Usuario consulta historial de reservas
+CU006: Usuario cancela una reserva
+CU007: Administrador gestiona canchas (CRUD)
+
+
+--------------------------------------------------------------------------------
+CU001: USUARIO REGISTRA CUENTA NUEVA
+--------------------------------------------------------------------------------
+Historia de Usuario:
+"Como visitante del sitio, quiero registrarme con mi información personal para poder acceder al sistema y hacer reservas"
+
+Criterios de Aceptación:
+- El formulario de registro debe estar visible
+- Se deben validar los campos obligatorios
+- Al registrarse exitosamente, debe mostrar mensaje de confirmación
+- El usuario debe poder iniciar sesión después del registro
+
+--------------------------------------------------------------------------------
+CU002: USUARIO INICIA SESIÓN
+--------------------------------------------------------------------------------
+Historia de Usuario:
+"Como usuario registrado, quiero iniciar sesión en el sistema para acceder a mis reservas y hacer nuevas"
+
+Criterios de Aceptación:
+- El formulario de login debe estar visible
+- Credenciales válidas permiten acceso
+- Se muestra mensaje de bienvenida
+- Se redirige a la página principal
+
+--------------------------------------------------------------------------------
+CU003: USUARIO VISUALIZA CANCHAS DISPONIBLES
+--------------------------------------------------------------------------------
+Historia de Usuario:
+"Como usuario, quiero ver las canchas disponibles con su información (tipo, precio, estado) para elegir cuál reservar"
+
+Criterios de Aceptación:
+- Se muestra lista de canchas disponibles
+- Cada cancha muestra: nombre, tipo de deporte, precio por hora
+- Se indica el estado de disponibilidad
+
+--------------------------------------------------------------------------------
+CU004: USUARIO RESERVA UNA CANCHA Y RECIBE CONFIRMACIÓN
+--------------------------------------------------------------------------------
+Historia de Usuario:
+"Como usuario autenticado, quiero reservar una cancha deportiva seleccionando fecha, hora y método de pago, para asegurar mi espacio y recibir una confirmación de mi reserva"
+
+Criterios de Aceptación:
+- Usuario puede seleccionar una cancha
+- Usuario puede elegir fecha y hora disponible
+- Usuario puede ingresar información de pago
+- Sistema procesa el pago exitosamente
+- Usuario recibe confirmación visual de la reserva
+- La reserva aparece en el historial
+
+--------------------------------------------------------------------------------
+CU005: USUARIO CONSULTA HISTORIAL DE RESERVAS
+--------------------------------------------------------------------------------
+Historia de Usuario:
+"Como usuario autenticado, quiero ver mi historial de reservas para conocer mis reservas pasadas y futuras"
+
+Criterios de Aceptación:
+- Se muestra lista de reservas del usuario
+- Cada reserva muestra: cancha, fecha, hora, estado
+- Las reservas están ordenadas cronológicamente
+
+--------------------------------------------------------------------------------
+CU006: USUARIO CANCELA UNA RESERVA
+--------------------------------------------------------------------------------
+Historia de Usuario:
+"Como usuario autenticado, quiero poder cancelar una reserva futura en caso de que no pueda asistir"
+
+Criterios de Aceptación:
+- Solo se pueden cancelar reservas futuras
+- Se muestra confirmación antes de cancelar
+- Después de cancelar, el estado cambia a "Cancelada"
+
+--------------------------------------------------------------------------------
+CU007: ADMINISTRADOR GESTIONA CANCHAS (CRUD)
+--------------------------------------------------------------------------------
+Historia de Usuario:
+"Como administrador del sistema, quiero poder crear, editar y eliminar canchas para mantener actualizada la oferta del centro"
+
+Criterios de Aceptación:
+- Solo administradores pueden acceder
+- Se pueden crear nuevas canchas
+- Se pueden editar canchas existentes
+- Se pueden eliminar canchas

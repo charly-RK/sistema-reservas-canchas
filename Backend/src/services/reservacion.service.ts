@@ -72,7 +72,7 @@ export class ReservacionService {
 
     async getAll() {
         return prisma.reserva.findMany({
-            include: { usuario: true, cancha: true },
+            include: { cancha: true },
         });
     }
 

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://localhost:3000/api',
+    baseURL: 'http://localhost:3000',
     headers: {
         'Content-Type': 'application/json',
     },
@@ -9,7 +9,7 @@ const api = axios.create({
 
 // Add a request interceptor to include the token
 api.interceptors.request.use((config) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('sportcenter_auth_token');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
